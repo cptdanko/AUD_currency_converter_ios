@@ -1,0 +1,26 @@
+{
+  "name": "CurrencyAPI",
+  "version": "1.0.0",
+  "summary": "A pod to get exchange rates",
+  "description": "A pod that uses api.exchangerate-api v4 to get the international exchange rate information. Note: The pod uses v4 which only updates once a day",
+  "homepage": "https://mydaytodo.com/blog",
+  "license": "MIT",
+  "authors": {
+    "Bhuman Soni": "bhuman.soni@gmail.com"
+  },
+  "social_media_url": "https://twitter.com/BhumanSoni",
+  "source": {
+    "git": ".",
+    "tag": "1.0.0"
+  },
+  "source_files": "CurrencyAPI",
+  "exclude_files": "Classes/Exclude",
+  "swift_versions": "5.0",
+  "platforms": {
+    "osx": null,
+    "ios": null,
+    "tvos": null,
+    "watchos": null
+  },
+  "swift_version": "5.0"
+}

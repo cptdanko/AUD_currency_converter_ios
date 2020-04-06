@@ -1,0 +1,6 @@
+framework module CurrencyAPI {
+  umbrella header "CurrencyAPI-umbrella.h"
+
+  export *
+  module * { export * }
+}

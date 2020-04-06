@@ -1,0 +1,29 @@
+PODS:
+  - CurrencyAPI (1.0.0)
+  - IQKeyboardManager (6.5.5)
+
+DEPENDENCIES:
+  - CurrencyAPI (from `https://github.com/cptdanko/CurrencyAPI.git`, tag `1.0.0`)
+  - IQKeyboardManager
+
+SPEC REPOS:
+  trunk:
+    - IQKeyboardManager
+
+EXTERNAL SOURCES:
+  CurrencyAPI:
+    :git: https://github.com/cptdanko/CurrencyAPI.git
+    :tag: 1.0.0
+
+CHECKOUT OPTIONS:
+  CurrencyAPI:
+    :git: https://github.com/cptdanko/CurrencyAPI.git
+    :tag: 1.0.0
+
+SPEC CHECKSUMS:
+  CurrencyAPI: c0c42d3af002fc83e2595c8673058700b352212a
+  IQKeyboardManager: 3a8b9e603f8b0eeaf5f096a1f2b2cfcf121992ef
+
+PODFILE CHECKSUM: 7186e922735f36adef4d90265dc173d120f977e0
+
+COCOAPODS: 1.8.4

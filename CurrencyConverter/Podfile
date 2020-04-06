@@ -1,0 +1,27 @@
+
+target 'CurrencyConverter' do
+  pod 'IQKeyboardManager'
+
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+  # Pods for CurrencyConverter
+  pod 'CurrencyAPI', :git => 'https://github.com/cptdanko/CurrencyAPI.git', :tag=> '1.0.0'
+
+# Workaround for Cocoapods issue #7606
+post_install do |installer|
+    installer.pods_project.build_configurations.each do |config|
+        config.build_settings.delete('CODE_SIGNING_ALLOWED')
+        config.build_settings.delete('CODE_SIGNING_REQUIRED')
+    end
+end
+  target 'CurrencyConverterTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+
+  target 'CurrencyConverterUITests' do
+    # Pods for testing
+  end
+
+end

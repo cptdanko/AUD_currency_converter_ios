@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-CurrencyConverter/Pods-CurrencyConverter-frameworks.sh
+${BUILT_PRODUCTS_DIR}/CurrencyAPI/CurrencyAPI.framework
+${BUILT_PRODUCTS_DIR}/IQKeyboardManager/IQKeyboardManager.framework
