@@ -32,11 +32,11 @@ These are strictly things that I can think of right now, if you feel I have miss
 
 
 ## Summary
-If you found this Github repo useful, would like to support me and My Day To-Do, you can do so by trying one of our [apps]. While you there and maybe leave a review for the app on the iOS app store!
+If you found this Github repo useful, would like to support me and My Day To-Do, try one of our [apps]. While you there and maybe leave a review for the app on the iOS app store!
 
 [CurrencyAPI pod on Github]: https://github.com/cptdanko/CurrencyAPI
 [AUD $ Converter]: https://apps.apple.com/au/app/aud-$-currency-converter/id1501784723
-[apps]:(https://mydaytodo.com/apps/)
+[apps]: https://mydaytodo.com/apps/
 [publishing Cocoapods]: https://medium.com/@bhuman.soni/open-source-currencyapi-cocoapod-on-github-9734f068b650
-[My Day To-Do]: (https://mydaytodo.com/)
-[blog]: (https://mydaytoco.com/blog)
+[My Day To-Do]: https://mydaytodo.com/
+[blog]: https://mydaytoco.com/blog
