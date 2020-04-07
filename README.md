@@ -7,7 +7,7 @@ The open-source part of my recently released [AUD $ Converter] app on the iOS Ap
 Apart from the aforementioned features, every other aspect of the version of the app released on the iOS App Store is here. 
 
 ## Who's this app for? User Story
-I am an Australian backpacker travelling across Europe and I want an app which can tell me how much of the local currency of the country where I am will I get for the Australian $ I have on me. Have a read of the CurrencyConverterApp.pdf file included in this repo, to see the above user story in more detail. I have extrapolated that story into a 4+ page requirements specification document, which adopts a top down approach i.e. 
+I am an Australian backpacker travelling across Europe and I want an app which can tell me how much of the local currency of the country where I am will I get for the Australian $ I have on me. Have a read of the [CurrencyConverterApp.pdf] file included in this repo, to see the above user story in more detail. I have extrapolated that story into a 4+ page requirements specification document, which adopts a top down approach i.e. 
 - Define the user story
 - Understand the user story
 - Think what's required technically e.g. specific iOS controls such as UIButton etc
@@ -34,6 +34,8 @@ These are strictly things that I can think of right now, if you feel I have miss
 ## Summary
 If you found this Github repo useful, would like to support me and My Day To-Do, try one of our [apps]. While you there and maybe leave a review for the app on the iOS app store!
 
+
+[CurrencyConverterApp.pdf]: https://github.com/cptdanko/AUDCurrencyConverter/blob/master/CurrencyConverterApp.pdf
 [CurrencyAPI pod on Github]: https://github.com/cptdanko/CurrencyAPI
 [AUD $ Converter]: https://apps.apple.com/au/app/aud-$-currency-converter/id1501784723
 [apps]: https://mydaytodo.com/apps/
