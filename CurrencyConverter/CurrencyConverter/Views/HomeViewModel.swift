@@ -16,14 +16,80 @@ import CurrencyAPI
  */
 class HomeViewModel {
     
-    @IBOutlet var auInputTF: UITextField!
-    @IBOutlet var foreignOutputTF: UITextField!
-    @IBOutlet var lastUpdatedLbl: UILabel!
+    lazy var currencySelectorPV: UIPickerView = {
+        let pickerView = UIPickerView()
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        return pickerView
+    }()
     
-    init(auInputTF: UITextField, foreignOutputTF: UITextField, lastUpdatedLbl: UILabel) {
-        self.foreignOutputTF = foreignOutputTF
-        self.auInputTF = auInputTF
-        self.lastUpdatedLbl = lastUpdatedLbl
+    lazy var auInputTF: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.keyboardType = UIKeyboardType.numbersAndPunctuation
+        textField.placeholder = "Australian $ I have"
+        return textField
+    }()
+    
+    lazy var foreignOutputTF: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.isEnabled = false
+        textField.placeholder = "Foreign money I get"
+        return textField
+    }()
+    
+    lazy var equalLbl:UILabel = {
+       let label = UILabel()
+        label.text = "="
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+    lazy var titleLbl:UILabel = {
+        let label = UILabel()
+        label.text = "AUD($) 🦘🐨 Converter"
+        label.textAlignment = .center
+        label.textColor = .white
+        label.backgroundColor = .systemOrange
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        return label
+    }()
+    lazy var lastUpdatedLbl: UILabel = {
+        let label = UILabel()
+        label.text = "Last updated at"
+        return label
+    }()
+    
+    var currenciesPickerData = [Currency]()
+    var selectedCurrency: Currency?
+    var lastUpdateDate: Date?
+    
+    let masterView: UIView!
+    let currencyAPI = APIFactory.getCurrencyAPI(type: .API_EX_RATE)!
+    init(masterView: UIView) {
+        self.masterView = masterView
+        self.masterView.backgroundColor = .white
+        setupAndPosition()
+        UIUtilities.roundLabels(views: [titleLbl], radius: Constants.UI_BTN_ROUND_RADIUS)
+    }
+    private func setupAndPosition() {
+        masterView.addSubview(titleLbl)
+        masterView.addSubview(currencySelectorPV)
+        let margins = masterView.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            titleLbl.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            titleLbl.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+            titleLbl.topAnchor.constraint(equalTo: margins.topAnchor, constant: 15),
+            titleLbl.heightAnchor.constraint(equalToConstant: 40),
+            
+            currencySelectorPV.topAnchor.constraint(greaterThanOrEqualTo: titleLbl.bottomAnchor, constant: 30),
+            currencySelectorPV.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 10),
+            currencySelectorPV.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: 10),
+        ])
+        
     }
     //simple method for us to query the exchange rate API and update the UI
     func convertValue(selectedCurrency: Currency, currencyAPI: ExchangeRateAPI, hostVC: UIViewController) {
@@ -71,3 +137,4 @@ class HomeViewModel {
         }
     }
 }
+

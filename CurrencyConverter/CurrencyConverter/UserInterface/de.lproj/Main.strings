@@ -1,0 +1,15 @@
+
+/* Class = "UILabel"; text = "="; ObjectID = "8hp-Vg-KjP"; */
+"8hp-Vg-KjP.text" = "=";
+
+/* Class = "UILabel"; text = "🇦🇺🦘$ (AUD) Currency Converter"; ObjectID = "APK-eD-S2o"; */
+"APK-eD-S2o.text" = "🇦🇺🦘$ (AUD) Currency Converter";
+
+/* Class = "UITextField"; placeholder = "aud($) I have"; ObjectID = "Po2-Zt-foN"; */
+"Po2-Zt-foN.placeholder" = "aud($) I have";
+
+/* Class = "UIButton"; normalTitle = "CONVERT"; ObjectID = "v13-RB-Qim"; */
+"v13-RB-Qim.normalTitle" = "CONVERT";
+
+/* Class = "UITextField"; placeholder = "currency I get"; ObjectID = "ybR-dN-WFH"; */
+"ybR-dN-WFH.placeholder" = "currency I get";

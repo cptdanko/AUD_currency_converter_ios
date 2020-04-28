@@ -15,23 +15,70 @@ import CurrencyAPI
 
 class HomeViewController: UIViewController {
 
+    var currencySelectorPV: UIPickerView = {
+       let pickerView = UIPickerView()
+       pickerView.translatesAutoresizingMaskIntoConstraints = false
+       return pickerView
+    }()
+
+    lazy var auInputTF: UITextField = {
+       let textField = UITextField()
+       textField.translatesAutoresizingMaskIntoConstraints = false
+       textField.keyboardType = UIKeyboardType.numbersAndPunctuation
+       textField.placeholder = "Australian $ I have"
+       return textField
+    }()
+
+    lazy var foreignOutputTF: UITextField = {
+       let textField = UITextField()
+       textField.translatesAutoresizingMaskIntoConstraints = false
+       textField.isEnabled = false
+       textField.placeholder = "Foreign money I get"
+       return textField
+    }()
+
+    lazy var equalLbl:UILabel = {
+      let label = UILabel()
+       label.text = "="
+       label.translatesAutoresizingMaskIntoConstraints = false
+       return label
+    }()
+
+    lazy var titleLbl:UILabel = {
+       let label = UILabel()
+       label.text = "AUD($) 🦘🐨 Converter"
+       label.textAlignment = .center
+       label.textColor = .white
+       label.backgroundColor = .systemOrange
+       label.translatesAutoresizingMaskIntoConstraints = false
+       
+       return label
+    }()
+    
+    lazy var lastUpdatedLbl: UILabel = {
+       let label = UILabel()
+       label.text = "Last updated at"
+       return label
+    }()
+    
+    var triggerButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Trigget", for: .normal)
+        return button
+    }()
+    
     var currenciesPickerData = [Currency]()
     var selectedCurrency: Currency?
     var lastUpdateDate: Date?
     
-    @IBOutlet var currencySelectorPV: UIPickerView!
-    @IBOutlet var auInputTF: UITextField!
-    @IBOutlet var foreignOutputTF: UITextField!
-    @IBOutlet var equalLbl: UILabel!
-
-    @IBOutlet var titleLbl: UILabel!
-    @IBOutlet var triggerBtn: UIButton!
-    @IBOutlet var lastUpdatedLbl: UILabel!
-    var homeView: HomeViewModel!
+    var triggerBtn = UIButton()
+    var homeView:HomeViewModel!
     
     let currencyAPI = APIFactory.getCurrencyAPI(type: .API_EX_RATE)!
+    
     override func viewDidAppear(_ animated: Bool) {
-        homeView = HomeViewModel(auInputTF: auInputTF, foreignOutputTF: foreignOutputTF, lastUpdatedLbl: lastUpdatedLbl)
+        //homeView = HomeViewModel(masterView: view)
         //this is just in case it takes time for the c
         currencySelectorPV.addActivityIndicator()
         
@@ -50,7 +97,33 @@ class HomeViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIUtilities.roundLabels(views: [equalLbl,auInputTF,foreignOutputTF,triggerBtn,currencySelectorPV,titleLbl, lastUpdatedLbl], radius: Constants.UI_BTN_ROUND_RADIUS)
+        setupUI()
+        currencySelectorPV.delegate = self
+        triggerButton.addTarget(self, action: #selector(loadCurrencies), for: .allTouchEvents)
+    }
+    @objc func loadCurrencies() {
+        currencySelectorPV.reloadAllComponents()
+    }
+    private func setupUI() {
+        view.backgroundColor = .white
+        view.addSubview(titleLbl)
+        view.addSubview(currencySelectorPV)
+        view.addSubview(triggerBtn)
+        let margins = view.safeAreaLayoutGuide
+        
+        NSLayoutConstraint.activate([
+            titleLbl.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            titleLbl.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+            titleLbl.topAnchor.constraint(equalTo: margins.topAnchor, constant: 15),
+            titleLbl.heightAnchor.constraint(equalToConstant: 40),
+            
+            currencySelectorPV.topAnchor.constraint(greaterThanOrEqualTo: titleLbl.bottomAnchor, constant: 30),
+            currencySelectorPV.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
+            currencySelectorPV.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
+            currencySelectorPV.widthAnchor.constraint(lessThanOrEqualTo: margins.widthAnchor, multiplier: 1),
+            currencySelectorPV.heightAnchor.constraint(equalTo: margins.heightAnchor, multiplier: 0.4),
+        ])
+        
     }
     //method to be made redundant very soon
     //because we really don't need it
@@ -76,7 +149,7 @@ extension HomeViewController:UIPickerViewDataSource, UIPickerViewDelegate {
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedCurrency = currenciesPickerData[row]
-        homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
+        //homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let currencyAtRow = currenciesPickerData[row]
@@ -92,6 +165,6 @@ extension HomeViewController: UITextFieldDelegate {
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
-        homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
+        //homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
     }
 }
