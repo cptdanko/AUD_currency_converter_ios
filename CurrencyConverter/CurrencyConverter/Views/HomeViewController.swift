@@ -15,26 +15,28 @@ import CurrencyAPI
 
 class HomeViewController: UIViewController {
 
-    var currencySelectorPV: UIPickerView = {
+    lazy var currencySelectorPV: UIPickerView = {
        let pickerView = UIPickerView()
        pickerView.translatesAutoresizingMaskIntoConstraints = false
        return pickerView
     }()
 
     lazy var auInputTF: UITextField = {
-       let textField = UITextField()
-       textField.translatesAutoresizingMaskIntoConstraints = false
-       textField.keyboardType = UIKeyboardType.numbersAndPunctuation
-       textField.placeholder = "Australian $ I have"
-       return textField
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.keyboardType = UIKeyboardType.numbersAndPunctuation
+        textField.placeholder = "Australian $ I have"
+        textField.textAlignment = .center
+        return textField
     }()
 
     lazy var foreignOutputTF: UITextField = {
-       let textField = UITextField()
-       textField.translatesAutoresizingMaskIntoConstraints = false
-       textField.isEnabled = false
-       textField.placeholder = "Foreign money I get"
-       return textField
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.isEnabled = false
+        textField.placeholder = "Foreign money I get"
+        textField.contentMode = .center
+        return textField
     }()
 
     lazy var equalLbl:UILabel = {
@@ -51,20 +53,23 @@ class HomeViewController: UIViewController {
        label.textColor = .white
        label.backgroundColor = .systemOrange
        label.translatesAutoresizingMaskIntoConstraints = false
-       
        return label
     }()
     
     lazy var lastUpdatedLbl: UILabel = {
-       let label = UILabel()
-       label.text = "Last updated at"
-       return label
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Last updated at"
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        return label
     }()
     
     var triggerButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Trigget", for: .normal)
+        button.setTitle("Trigger", for: .normal)
+        button.backgroundColor = .systemGreen
         return button
     }()
     
@@ -72,7 +77,6 @@ class HomeViewController: UIViewController {
     var selectedCurrency: Currency?
     var lastUpdateDate: Date?
     
-    var triggerBtn = UIButton()
     var homeView:HomeViewModel!
     
     let currencyAPI = APIFactory.getCurrencyAPI(type: .API_EX_RATE)!
@@ -81,7 +85,6 @@ class HomeViewController: UIViewController {
         //homeView = HomeViewModel(masterView: view)
         //this is just in case it takes time for the c
         currencySelectorPV.addActivityIndicator()
-        
         currencyAPI.fetchExchangeRates(baseCur: Constants.CURRENCY_CODE.AUD) { (currencies, error, date) in
            if error != nil {
                 let alertCtrl = DialogHelper.shared.getCurrencyFetchErr()
@@ -92,6 +95,9 @@ class HomeViewController: UIViewController {
                 self.lastUpdateDate = date
                 self.reloadPickerView()
                 self.selectedCurrency = cur[0] //so SelectedCurrency is almost never nil
+                DispatchQueue.main.async {
+                    self.lastUpdatedLbl.text = "\(self.lastUpdatedLbl.text!)\n\(date!.dateStr)"
+                }
            }
         }
     }
@@ -99,6 +105,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         currencySelectorPV.delegate = self
+        auInputTF.delegate = self
         triggerButton.addTarget(self, action: #selector(loadCurrencies), for: .allTouchEvents)
     }
     @objc func loadCurrencies() {
@@ -108,8 +115,20 @@ class HomeViewController: UIViewController {
         view.backgroundColor = .white
         view.addSubview(titleLbl)
         view.addSubview(currencySelectorPV)
-        view.addSubview(triggerBtn)
+        view.addSubview(triggerButton)
+        view.addSubview(lastUpdatedLbl)
         let margins = view.safeAreaLayoutGuide
+        
+        let currencyStackView = UIStackView()
+        view.addSubview(currencyStackView)
+        currencyStackView.translatesAutoresizingMaskIntoConstraints = false
+        currencyStackView.spacing = 10.0
+        currencyStackView.axis = .horizontal
+                
+        currencyStackView.addArrangedSubview(auInputTF)
+        currencyStackView.addArrangedSubview(equalLbl)
+        currencyStackView.addArrangedSubview(foreignOutputTF)
+        currencyStackView.distribution = .equalSpacing
         
         NSLayoutConstraint.activate([
             titleLbl.leadingAnchor.constraint(equalTo: margins.leadingAnchor),
@@ -122,6 +141,22 @@ class HomeViewController: UIViewController {
             currencySelectorPV.trailingAnchor.constraint(equalTo: margins.trailingAnchor),
             currencySelectorPV.widthAnchor.constraint(lessThanOrEqualTo: margins.widthAnchor, multiplier: 1),
             currencySelectorPV.heightAnchor.constraint(equalTo: margins.heightAnchor, multiplier: 0.4),
+            
+            currencyStackView.topAnchor.constraint(equalTo: currencySelectorPV.bottomAnchor, constant: 20.0),
+            currencyStackView.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 10.0),
+            currencyStackView.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -10.0),
+            currencyStackView.heightAnchor.constraint(equalToConstant: CGFloat(40.0)),
+            
+            lastUpdatedLbl.topAnchor.constraint(equalTo: currencyStackView.bottomAnchor, constant: 20.0),
+            lastUpdatedLbl.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 10.0),
+            lastUpdatedLbl.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -10.0),
+            lastUpdatedLbl.heightAnchor.constraint(equalToConstant: CGFloat(60.0)),
+            
+            triggerButton.topAnchor.constraint(equalTo: lastUpdatedLbl.bottomAnchor, constant: 50),
+            triggerButton.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 10),
+            triggerButton.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -10),
+            triggerButton.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 10),
+            triggerButton.heightAnchor.constraint(equalToConstant: 40)
         ])
         
     }
@@ -130,6 +165,13 @@ class HomeViewController: UIViewController {
     @IBAction func convertCurrency(_ sender: Any) {
         FeedbackHelper.fbh.triggerFeedback(ofType: .MEDIUM)
         homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
+    }
+    /*
+     This method is only added here for debugging purposes
+     */
+    func addBorder(view: UIView) {
+        view.layer.borderWidth = 2.0
+        view.layer.borderColor = UIColor.green.cgColor
     }
 }
 
@@ -161,10 +203,39 @@ extension HomeViewController:UIPickerViewDataSource, UIPickerViewDelegate {
 extension HomeViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+        print(textField.text)
+        return textField.resignFirstResponder()
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
+        let enteredVal = textField.text!
+        print(enteredVal)
         textField.resignFirstResponder()
         //homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
+    }
+    private func convertValue(val: String, selectedCurrency: Currency, currencyAPI: ExchangeRateAPI, hostVC: UIViewController) {
+        self.currencyAPI.getExchangeRate(baseCur: Constants.CURRENCY_CODE.AUD, code: selectedCurrency.code) { (currency, err, date) in
+            if err != nil {
+                guard let iVal = Decimal(string:val) else {
+                    return
+                }
+                let exchangeRate = selectedCurrency.rate
+                var fullConversion = iVal * exchangeRate
+                var rounded = Decimal()
+                //let convertedValue = round(fullConversion * 1000) / 1000
+                NSDecimalRound(&rounded, &fullConversion, 3, .plain)
+                DispatchQueue.main.async {
+                    self.foreignOutputTF.text = "\(rounded)"
+                    let lastUpdateLblTxt = NSLocalizedString("home.view.date.lastupdated", comment: "")
+                    self.foreignOutputTF.hideLoadingIcon()
+                    self.lastUpdatedLbl.isHidden = false
+                    /*if let dateStr = lastUpdatedDate?.dateStr {
+                        var updateLbl = "\(lastUpdateLblTxt)"
+                        updateLbl.append(contentsOf: "\n\(dateStr)")
+                        self.lastUpdatedLbl.text = updateLbl
+                    }*/
+                }
+            }
+            
+        }
     }
 }
