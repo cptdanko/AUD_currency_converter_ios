@@ -74,10 +74,11 @@ class HomeViewController: UIViewController {
     }()
     
     var currenciesPickerData = [Currency]()
+    /*there will always be a selectedCurrency value, maybe it shouldn't be optional?
+    because, we will have a value here, when we initially load as well as when we
+     selected a currency via the drop-down
+     */
     var selectedCurrency: Currency?
-    var lastUpdateDate: Date?
-    
-    var homeView:HomeViewModel!
     
     let currencyAPI = APIFactory.getCurrencyAPI(type: .API_EX_RATE)!
     
@@ -92,12 +93,9 @@ class HomeViewController: UIViewController {
            }
            if let cur = currencies {
                 self.currenciesPickerData = cur
-                self.lastUpdateDate = date
                 self.reloadPickerView()
                 self.selectedCurrency = cur[0] //so SelectedCurrency is almost never nil
-                DispatchQueue.main.async {
-                    self.lastUpdatedLbl.text = "\(self.lastUpdatedLbl.text!)\n\(date!.dateStr)"
-                }
+                self.modLastUpdateLbl(date: date)
            }
         }
     }
@@ -164,7 +162,7 @@ class HomeViewController: UIViewController {
     //because we really don't need it
     @IBAction func convertCurrency(_ sender: Any) {
         FeedbackHelper.fbh.triggerFeedback(ofType: .MEDIUM)
-        homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
+        //homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
     }
     /*
      This method is only added here for debugging purposes
@@ -172,6 +170,18 @@ class HomeViewController: UIViewController {
     func addBorder(view: UIView) {
         view.layer.borderWidth = 2.0
         view.layer.borderColor = UIColor.green.cgColor
+    }
+    private func modLastUpdateLbl(date: Date?) {
+        guard let updateDate = date else {
+            return
+        }
+        //have a separate variable here just for the sake of clarity, nothing else
+        let lastUpdateLblTxt = NSLocalizedString("home.view.date.lastupdated", comment: "")
+        var updateLbl = "\(lastUpdateLblTxt)"
+        DispatchQueue.main.async {
+            updateLbl.append(contentsOf: "\n\(updateDate.dateStr)")
+            self.lastUpdatedLbl.text = updateLbl
+        }
     }
 }
 
@@ -191,7 +201,10 @@ extension HomeViewController:UIPickerViewDataSource, UIPickerViewDelegate {
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         selectedCurrency = currenciesPickerData[row]
-        //homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
+        guard let enteredVal = auInputTF.text else {
+            return
+        }
+        convertValue(val: enteredVal, selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let currencyAtRow = currenciesPickerData[row]
@@ -203,14 +216,18 @@ extension HomeViewController:UIPickerViewDataSource, UIPickerViewDelegate {
 extension HomeViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print(textField.text)
+        guard let enteredVal = textField.text else {
+            return false
+        }
+        convertValue(val: enteredVal, selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
         return textField.resignFirstResponder()
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        let enteredVal = textField.text!
-        print(enteredVal)
+        guard let enteredVal = textField.text else {
+            return
+        }
+        convertValue(val: enteredVal, selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
         textField.resignFirstResponder()
-        //homeView.convertValue(selectedCurrency: selectedCurrency!, currencyAPI: currencyAPI, hostVC: self)
     }
     private func convertValue(val: String, selectedCurrency: Currency, currencyAPI: ExchangeRateAPI, hostVC: UIViewController) {
         self.currencyAPI.getExchangeRate(baseCur: Constants.CURRENCY_CODE.AUD, code: selectedCurrency.code) { (currency, err, date) in
@@ -225,17 +242,10 @@ extension HomeViewController: UITextFieldDelegate {
                 NSDecimalRound(&rounded, &fullConversion, 3, .plain)
                 DispatchQueue.main.async {
                     self.foreignOutputTF.text = "\(rounded)"
-                    let lastUpdateLblTxt = NSLocalizedString("home.view.date.lastupdated", comment: "")
                     self.foreignOutputTF.hideLoadingIcon()
-                    self.lastUpdatedLbl.isHidden = false
-                    /*if let dateStr = lastUpdatedDate?.dateStr {
-                        var updateLbl = "\(lastUpdateLblTxt)"
-                        updateLbl.append(contentsOf: "\n\(dateStr)")
-                        self.lastUpdatedLbl.text = updateLbl
-                    }*/
+                    self.modLastUpdateLbl(date: date)
                 }
             }
-            
         }
     }
 }
