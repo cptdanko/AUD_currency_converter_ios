@@ -177,7 +177,7 @@ class HomeViewController: UIViewController {
         }
         //have a separate variable here just for the sake of clarity, nothing else
         let lastUpdateLblTxt = NSLocalizedString("home.view.date.lastupdated", comment: "")
-        var updateLbl = "\(lastUpdateLblTxt)"
+        var updateLbl = "\(lastUpdateLblTxt)"  
         DispatchQueue.main.async {
             updateLbl.append(contentsOf: "\n\(updateDate.dateStr)")
             self.lastUpdatedLbl.text = updateLbl
@@ -230,22 +230,25 @@ extension HomeViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
     }
     private func convertValue(val: String, selectedCurrency: Currency, currencyAPI: ExchangeRateAPI, hostVC: UIViewController) {
-        self.currencyAPI.getExchangeRate(baseCur: Constants.CURRENCY_CODE.AUD, code: selectedCurrency.code) { (currency, err, date) in
+        currencyAPI.getExchangeRate(baseCur: Constants.CURRENCY_CODE.AUD, code: selectedCurrency.code) { (currency, err, date) in
             if err != nil {
-                guard let iVal = Decimal(string:val) else {
-                    return
-                }
-                let exchangeRate = selectedCurrency.rate
-                var fullConversion = iVal * exchangeRate
-                var rounded = Decimal()
-                //let convertedValue = round(fullConversion * 1000) / 1000
-                NSDecimalRound(&rounded, &fullConversion, 3, .plain)
-                DispatchQueue.main.async {
-                    self.foreignOutputTF.text = "\(rounded)"
-                    self.foreignOutputTF.hideLoadingIcon()
-                    self.modLastUpdateLbl(date: date)
-                }
+                //to be implemented, this is open-source code,
+                //maybe someone can contribute to this repo and add this?
+            }
+            guard let iVal = Decimal(string:val) else {
+                return
+            }
+            let exchangeRate = selectedCurrency.rate
+            var fullConversion = iVal * exchangeRate
+            var rounded = Decimal()
+            //let convertedValue = round(fullConversion * 1000) / 1000
+            NSDecimalRound(&rounded, &fullConversion, 3, .plain)
+            DispatchQueue.main.async {
+                self.foreignOutputTF.text = "\(rounded)"
+                self.foreignOutputTF.hideLoadingIcon()
+                self.modLastUpdateLbl(date: date)
             }
         }
+        
     }
 }

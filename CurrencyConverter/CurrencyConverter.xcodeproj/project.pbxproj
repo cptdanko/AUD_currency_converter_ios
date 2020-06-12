@@ -12,7 +12,6 @@
 		C611818D242B1B230083F00B /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C611818C242B1B230083F00B /* DateExtension.swift */; };
 		C63285872400AA6E001EE680 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C63285862400AA6E001EE680 /* HomeViewController.swift */; };
 		C67DE037243B64CF00C72BCA /* UIViewGeneral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67DE036243B64CF00C72BCA /* UIViewGeneral.swift */; };
-		C69012422431AE40008E1B66 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69012412431AE40008E1B66 /* HomeViewModel.swift */; };
 		C69012442431B639008E1B66 /* DialogHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C69012432431B639008E1B66 /* DialogHelper.swift */; };
 		C6AB14F12400C64F0061FD64 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C6AB14F02400C64F0061FD64 /* Localizable.strings */; };
 		C6AB14F22400C64F0061FD64 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C6AB14F02400C64F0061FD64 /* Localizable.strings */; };
@@ -62,7 +61,6 @@
 		C64C4A29242CD78500293D20 /* CurrencyAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CurrencyAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C64C4A2C242CD78A00293D20 /* CurrencyAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CurrencyAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C67DE036243B64CF00C72BCA /* UIViewGeneral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewGeneral.swift; sourceTree = "<group>"; };
-		C69012412431AE40008E1B66 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		C69012432431B639008E1B66 /* DialogHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogHelper.swift; sourceTree = "<group>"; };
 		C6AB14F02400C64F0061FD64 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		C6B92B7D23FFF08300EB91A4 /* SwiftyJSON.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -155,7 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				C63285862400AA6E001EE680 /* HomeViewController.swift */,
-				C69012412431AE40008E1B66 /* HomeViewModel.swift */,
 				C69012432431B639008E1B66 /* DialogHelper.swift */,
 			);
 			path = Views;
@@ -506,7 +503,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				C63285872400AA6E001EE680 /* HomeViewController.swift in Sources */,
-				C69012422431AE40008E1B66 /* HomeViewModel.swift in Sources */,
 				C6BC505223FE6E3D00F95F02 /* Constants.swift in Sources */,
 				C67DE037243B64CF00C72BCA /* UIViewGeneral.swift in Sources */,
 				C6BC505523FE6E7B00F95F02 /* FeedbackHelper.swift in Sources */,
