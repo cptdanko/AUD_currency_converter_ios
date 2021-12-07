@@ -26,14 +26,21 @@ pod install
 
 Have a read of this post on medium to know more on building and [publishing Cocoapods] on Github.
 
+# More great tutorials and code samples
+Checkout [this blog] for more "how-to" code samples, tutorials and just info on how to solve problems.
 
-## Summary
-If you found this Github repo useful, would like to support me and My Day To-Do, try one of our [apps]. While you there and maybe leave a review for the app on the iOS app store!
+If you like what I am doing, you can [buy me a coffee]
+
+Click on the next link for more info on the 13+ year [software engineering career journey] of the author.
+
+[buy me a coffee]: https://www.buymeacoffee.com/bhumansoni
+[software engineering career journey]: https://mydaytodo.com/the-3-stages-of-a-software-engineering-career/
+[this blog]: https://mydaytodo.com/blog/
 
 [CurrencyAPI pod on Github]: https://github.com/cptdanko/CurrencyAPI
 [AUD $ Converter]: https://apps.apple.com/au/app/aud-$-currency-converter/id1501784723
 [apps]: https://mydaytodo.com/apps/
 [publishing Cocoapods]: https://medium.com/@bhuman.soni/open-source-currencyapi-cocoapod-on-github-9734f068b650
 [My Day To-Do]: https://mydaytodo.com/
-[blog]: https://mydaytoco.com/blog
+[blog]: https://mydaytodo.com/blog
 [without using storyboards]:https://github.com/cptdanko/AUDCurrencyConverter/tree/noStoryboard
